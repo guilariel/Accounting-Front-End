@@ -1,4 +1,4 @@
-import { LoginApi, GoogleCallback } from "../api/LoginApi";
+import { LoginButton } from "../features/OAuth/components/OAuthButton";
 
 export function LogInPage() {
     return (
@@ -31,7 +31,7 @@ export function LogInPage() {
                     </div>
 
                     <div className="flex justify-center">
-                        <LoginApi />
+                        <LoginButton />
                     </div>
 
                     {/* Divider */}
@@ -55,8 +55,4 @@ export function LogInPage() {
             </div>
         </div>
     );
-}
-
-export function CallbackPage() {
-    return <GoogleCallback />;
 }

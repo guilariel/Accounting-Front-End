@@ -1,8 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import { CallbackPage, LogInPage } from "./pages/LogInPage";
+import { LogInPage } from "./pages/LogInPage";
 import { Home } from "./pages/Home";
 import { UserProvider } from "./provider/UserProvider";
 import { AccountPage } from "./pages/AccountPage";
+import { GoogleCallback } from "./pages/GoggleCallBack";
 
 function App() {
     return (
@@ -15,7 +16,7 @@ function App() {
 
                 <Route
                     path="/auth-success"
-                    element={<CallbackPage />}
+                    element={<GoogleCallback />}
                 />
 
                 <Route
