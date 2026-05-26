@@ -4,21 +4,18 @@ import { getEmail, getToken, saveAuthData } from "../features/OAuth/utils/OAuthS
 
 export function GoogleCallback() {
     const navigate = useNavigate();
-
     useEffect(() => {
         if (handleOAuthCallback()) {
-            navigate("/");
-        }else{
-            navigate("/login");
+            navigate("/home");
         }
     }, []);
     return null;
 }
-
 function handleOAuthCallback() : boolean {
     const token = getToken();
     const email = getEmail();
-
+    console.log("OAuth Callback - Token:", token);
+    console.log("OAuth Callback - Email:", email);
     if (token && email) {
         saveAuthData(token, email);
         return true;
