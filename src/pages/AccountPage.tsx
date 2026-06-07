@@ -1,55 +1,100 @@
 import { useContext, useEffect, useState } from "react";
 import type { User } from "../types/User";
-import  axios  from "axios";
 import { UserContext } from "../provider/UserProvider";
+import { getUserByEmail } from "../api/UserApi";
+import { getUserBranchesByName } from "../api/UserBranchApi";
+import { getAllByUserBranches, getAllBalances } from "../api/AccountApi";
+import type { Branch } from "../types/Branch";
+import type { Account } from "../types/Account";
+import type { AccountBalance } from "../types/Balance";
+import type { AccountData } from "../types/AcountData";
 
 export function AccountPage() {
     const context = useContext(UserContext);
     const [userData, setUserData] = useState<User | null>(null);
-    const [error, setError] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(true);
-
+    const [branchData, setBranchData] = useState<Branch[] | null>(null);
+    const [accountData, setAccountData] = useState<Account[] | null>(null);
+    const [balanceData, setBalanceData] = useState<AccountBalance[] | null>(null);
     useEffect(() => {
-        const GetUserData = async () => {
-            setLoading(true);
-            try {
-                console.log("Fetching user data for email:", context?.email);
-                const response = await axios.get<User>("https://localhost:7248/Users/GetUserByEmail", {
-                    params: {
-                        email: context?.email
-                    }
-                });
-                setUserData(response.data);
-            } catch (err: any) {
-                setError(err.message || "error while fetching user data");
-            } finally {
-                setLoading(false);
-            }
+        async function loadData() {
+            const user = await getUserByEmail(context?.email || "");
+            setUserData(user);
 
+            const branches = await getUserBranchesByName(context?.email || "");
+            setBranchData(branches);
+
+            const userAndBranches = {
+                user_name: context?.email || "",
+                branches
+            };
+
+
+            const accounts = await getAllByUserBranches({
+                user_name: userAndBranches.user_name,
+                branches
+            });
+
+            setAccountData(accounts);
+
+            const balances = await getAllBalances(accounts);
+            setBalanceData(balances);
         }
-        GetUserData();
+
+        loadData();
     }, [context?.email]);
+
+    const organized =
+        branchData && accountData && balanceData
+            ? organizeData(branchData, accountData, balanceData)
+            : [];
 
     return (
         <div>
             <h1>Account Page</h1>
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
             {userData && (
                 <div>
                     <h2>{userData.name}</h2>
                     <p>Email: {userData.email}</p>
-                    <h3>Branches:</h3>
-                    <ul>
-                        {userData.branches.map((branch) => (
-                            <li key={branch.name}>
-                                <strong>{branch.name}</strong> - {branch.company_name}
-                            </li>
-                        ))}
-                    </ul>
                 </div>
             )}
+            {organized.map(item => (
+                <div key={item.account.name}>
+                    <h1>Account</h1>
+
+                    <p>Name: {item.account.name}</p>
+                    <p>
+                        Status: {item.account.is_active ? "Active" : "Inactive"}
+                    </p>
+
+                    <p>Balance: {item.balance.balance.toString()}</p>
+                    <p>Date: {item.balance.date.toString()}</p>
+
+                    <h2>Branch</h2>
+
+                    <p>Name: {item.branch.name}</p>
+                    <p>Company: {item.branch.company_name}</p>
+                    <p>
+                        Main branch: {item.branch.main_branch ? "Yes" : "No"}
+                    </p>
+                </div>
+            ))}
         </div>
     );
 }
 
+function organizeData(
+    branches: Branch[],
+    accounts: Account[],
+    balances: AccountBalance[]
+): AccountData[] {
+
+    return accounts.map(account => ({
+        account,
+        branch: branches.find(
+            branch => branch.name === account.branch_name
+        )!,
+        balance: balances.find(
+            balance => balance.account_name === account.name
+        )!
+    }));
+}

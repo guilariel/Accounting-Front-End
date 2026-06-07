@@ -4,6 +4,11 @@ import { Home } from "./pages/Home";
 import { UserProvider } from "./provider/UserProvider";
 import { AccountPage } from "./pages/AccountPage";
 import { GoogleCallback } from "./pages/GoggleCallBack";
+import axios from "axios";
+
+export const api = axios.create({
+    baseURL: "https://localhost:7248/api"
+});
 
 function App() {
     return (
