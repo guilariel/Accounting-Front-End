@@ -1,11 +1,12 @@
-import { AddCompanyCard } from "../features/addCompanyPage/components/AddCompanyCard";
-import { AddBranchCard } from "../features/addCompanyPage/components/AddBranchCard";
+import { FormPageTemplate } from "../shared/templates/FormPageTemplate";
+import { AddCompanyForm } from "../shared/organisms/companies/AddCompanyForm";
+import { AddBranchForm } from "../shared/organisms/branches/AddBranchForm";
 
-export function AddCompanyPage(){
-    return(
-        <div>
-            <AddCompanyCard/>
-            <AddBranchCard/>
-        </div>
+export function AddCompanyPage() {
+    return (
+        <>
+            <AddCompanyForm />
+            <AddBranchForm />
+        </>
     );
 }

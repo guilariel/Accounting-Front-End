@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import type { User } from "../types/User";
 import { getUserByEmail } from "../api/UserApi";
-import { AccountCard } from "../features/accountPage/components/AccountCard";
+import { AccountCard } from "../shared/organisms/accounts/AccountCard";
 import { useSelector } from "react-redux";
+import { FormPageTemplate } from "../shared/templates/FormPageTemplate";
 
 export function AccountPage() {
     const email = useSelector(
@@ -21,18 +22,7 @@ export function AccountPage() {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <div className="max-w-7xl mx-auto p-6">
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold text-gray-800">
-                        Account Page
-                    </h1>
-                    <p className="text-gray-500 mt-2">
-                        Manage accounts, balances, journals and ledgers.
-                    </p>
-                </div>
-
-                <AccountCard user={userData} />
-            </div>
+            <AccountCard user={userData} />
         </div>
     );
 }

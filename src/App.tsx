@@ -1,12 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import { LogInPage } from "./pages/LogInPage";
 import { Home } from "./pages/Home";
-import { UserProvider } from "./provider/UserProvider";
 import { AccountPage } from "./pages/AccountPage";
-import { GoogleCallback } from "./pages/GoggleCallBack";
+import { GoogleCallback } from "./utils/GoggleCallBack";
 import axios from "axios";
 import { CompanyPage } from "./pages/CompanyPage";
-import DashBoard from "./pages/DashBoard";
+import DashBoard from "./pages/NavBar";
 import { AddCompanyPage } from "./pages/AddCompanyPage";
 import { UpdateCompanyPage } from "./pages/UpdateCompanyPage";
 import { DeleteCompanyPage } from "./pages/DeleteCompanyPage";
