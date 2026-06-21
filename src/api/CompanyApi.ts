@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Company } from "../types/Company";
+import type { Company, UpdateCompany } from "../types/Company";
 import type { Branch } from "../types/Branch";
 import { api } from "../App";
 export async function getCompany(companyName: string): Promise<Company> {
@@ -22,10 +22,9 @@ export async function getAllCompaniesByBranches(branches: Branch[]): Promise<Com
     return response.data;
 }
 
-export async function addCompany(company: Company): Promise<void> {
+export async function addCompany(companyName: string): Promise<void> {
     await api.post(
-        "/company",
-        company
+        `/company/${companyName}`
     );
 }
 
@@ -35,7 +34,7 @@ export async function deleteCompany(companyName: string): Promise<void> {
     );
 }
 
-export async function updateCompany(company: Company): Promise<void> {
+export async function updateCompany(company: UpdateCompany): Promise<void> {
     await api.put(
         `/company`,
         company

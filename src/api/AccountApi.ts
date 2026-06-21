@@ -1,5 +1,5 @@
-import type { Account, AddAccount, GetAccount, UserAndBranches } from "../types/Account";
-import type { AddJournalEntryLineDto } from "../types/JournalEntry";
+import type { Account, AddAccount, GetAccount, UpdateAccount, UserAndBranches } from "../types/Account";
+import type {  JournalEntryLines, AddJournalEntryLine } from "../types/JournalEntry";
 import type { Branch } from "../types/Branch";
 import { api } from "../App";
 import type { AccountBalance } from "../types/Balance";
@@ -12,23 +12,19 @@ export async function addAccount(account: AddAccount): Promise<void> {
 }
 
 export async function deleteAccount(
-    accountName: string,
-    branchName: string
+    account: GetAccount
 ): Promise<void> {
 
     await api.delete(
         "/accounts",
         {
-            params: {
-                accountName,
-                branchName
-            }
+            params: account
         }
     );
 }
 
 
-export async function updateAccount(account: Account): Promise<void> {
+export async function updateAccount(account: UpdateAccount): Promise<void> {
     await api.put(
         "/accounts",
         account
@@ -75,17 +71,13 @@ export async function getAllByUserBranches(
 
 
 export async function getTransactionsByAccount(
-    accountName: string,
-    branchName: string
-): Promise<any[]> {
+    account: GetAccount
+): Promise<JournalEntryLines[]> {
 
-    const response = await api.get<any[]>(
+    const response = await api.get<JournalEntryLines[]>(
         "/accounts/transactions",
         {
-            params: {
-                accountName,
-                branchName
-            }
+            params: account
         }
     );
 
@@ -93,7 +85,7 @@ export async function getTransactionsByAccount(
 }
 
 export async function changeFunds(
-    journalEntry: AddJournalEntryLineDto
+    journalEntry: AddJournalEntryLine
 ): Promise<void> {
 
     await api.post(

@@ -2,7 +2,7 @@ import type { GeneralBalance } from "./Balance";
 
 export interface Branch {
     name: string;
-    company_name: string;
+    companyName: string;
     main_branch: boolean;
 }
 
@@ -19,5 +19,5 @@ export interface BranchWithoutCompany {
 
 export interface BranchAndBalance{
     branch: Branch;
-    balance: GeneralBalance;
+    balance: GeneralBalance | undefined;
 }

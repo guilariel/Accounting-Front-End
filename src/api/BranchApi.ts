@@ -17,10 +17,11 @@ export async function getBranch(
   return response.data;
 }
 export async function addBranch(branch: Branch): Promise<void> {
-  await api.post(
+  await api.post<void>(
     "/branch",
     branch
   );
+
 }
 
 export async function deleteBranch(branchName: string): Promise<void> {
@@ -50,8 +51,7 @@ export async function getAllByUserBranch(userBranch: UserBranch[]): Promise<Bran
 
 export async function updateBranch(branch: UpdateBranch): Promise<void> {
   await api.put(
-    "/branch",
-    branch
+    "/branch", branch
   );
 }
 

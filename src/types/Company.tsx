@@ -12,6 +12,5 @@ export interface AddCompany {
 export interface UpdateCompany {
     name: string;
     newName: string;
-    cuit: string;
 }
 

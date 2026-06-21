@@ -1,4 +1,4 @@
-export interface JournalEntryLinesDto {
+export interface JournalEntryLines {
     branch_name: string;
     created_by: string;
     date: string;
@@ -8,7 +8,7 @@ export interface JournalEntryLinesDto {
     debit: number;
 }
 
-export interface AddJournalEntryLineDto {
+export interface AddJournalEntryLine {
     branch_name: string;
     created_by: string;
     description: string;

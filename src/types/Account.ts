@@ -20,16 +20,23 @@ export interface AddAccount {
     name: string;
     type: string;
     nature: string;
-    start_date: Date;
+    isactive: boolean;
+    start_date: string;
+    role_name: string;
+    role_description: string;
+    is_admin: boolean;
 }
 
 export interface UpdateAccount {
     branch_name: string;
     name: string;
-    newName?: string;
-    type?: string;
-    nature?: string;
-    is_active?: boolean;
+    newName : string;
+    type : string;
+    nature : string;
+    is_active : boolean;
+    role_name: string;
+    role_description: string;
+    is_admin: boolean;
 }
 
 export interface UserAndBranches{

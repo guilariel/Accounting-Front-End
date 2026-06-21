@@ -1,4 +1,4 @@
-export interface LedgerEntryDto {
+export interface LedgerEntry {
     account_name: string;
     entry_date: string;
     branch_name: string;
@@ -7,7 +7,7 @@ export interface LedgerEntryDto {
     running_balance: number;
 }
 
-export interface GetLedgerDto {
+export interface GetLedger {
     account_name: string;
     branch_name: string;
     created_by: string;

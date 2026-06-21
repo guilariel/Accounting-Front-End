@@ -2,7 +2,7 @@ import { LoginButton } from "../features/OAuth/components/OAuthButton";
 
 export function LogInPage() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-700 to-sky-500 flex items-center justify-center px-4">
+        <div className="min-h-screen  flex items-center justify-center px-4">
 
             <div className="card bg-blue bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg p-8 w-full max-w-md">
 
@@ -12,11 +12,11 @@ export function LogInPage() {
                         hola
                     </div> */}
 
-                    <h1 className="text-3xl font-bold mb-2">
+                    <h1 className="text-3xl font-bold mb-2 text-gray-900">
                         Bienvenido
                     </h1>
 
-                    <p className="text-sm text-gray-50">
+                    <p className="text-sm text-gray-600">
                         Iniciá sesión para continuar con tu cuenta.
                     </p>
                 </div>
@@ -25,24 +25,24 @@ export function LogInPage() {
                 <div className="space-y-5">
 
                     <div className="text-center">
-                        <h2 className="text-lg font-semibold text-gray-300">
+                        <h1 className="text-xl font-semibold text-gray-700">
                             Continuar con Google
-                        </h2>
+                        </h1>
                     </div>
 
-                    <div className="flex justify-center">
+                    <div className="flex justify-center ">
                         <LoginButton />
                     </div>
 
                     {/* Divider */}
                     <div className="flex items-center gap-3">
-                        <div className="flex-1 h-px bg-gray-300"></div>
+                        <div className="flex-1 h-px bg-gray-400"></div>
 
                         <span className="text-sm text-gray-400">
                             Seguro y rápido
                         </span>
 
-                        <div className="flex-1 h-px bg-gray-300"></div>
+                        <div className="flex-1 h-px bg-gray-500"></div>
                     </div>
                 </div>
 

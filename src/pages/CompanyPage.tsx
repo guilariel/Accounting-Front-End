@@ -1,106 +1,86 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../provider/UserProvider";
-import type { Branch, BranchAndBalance } from "../types/Branch";
+import { useEffect, useState } from "react";
 import type { Company } from "../types/Company";
-import { getAllBranches, getAllBranchesByCompany } from "../api/BranchApi";
 import { getAllCompanies } from "../api/CompanyApi";
-import type { GeneralBalance } from "../types/Balance";
-import { getBalancesByBranches, getLatestCompanyBalance } from "../api/BalanceApi";
-import type { GetCompanyBalance } from "../types/Balance";
+import { CompanyCard } from "../features/companyPage/components/CompanyCard";
 
 export function CompanyPage() {
-    const context = useContext(UserContext);
     const [companyData, setCompanyData] = useState<Company[] | null>(null);
-    const [branchData, setBranchData] = useState<Branch[] | null>(null);
+    const [search, setSearch] = useState("");
+
     useEffect(() => {
         async function loadData() {
             const companies = await getAllCompanies();
             setCompanyData(companies);
-
-            const branches = await getAllBranches();
-            setBranchData(branches);
         }
-        loadData();
-    }, []);
-}
 
-function CompanyCard( company: Company ) {
-    const [branchData, setBranchData] = useState<Branch[] | null>(null);
-    const [companyBalance, setCompanyBalance] = useState<GeneralBalance | null>(null);
-    const [BranchesBalance, setBranchesBalance] = useState<GeneralBalance[] | null>(null);
-
-    const [organizedData, setOrganizedData] = useState<BranchAndBalance[]>([]);
-
-    const [expanded, setExpanded] = useState<boolean>(false);
-
-    useEffect(() => {
-        async function loadData() {
-            const branches = await getAllBranchesByCompany(company.name);
-            setBranchData(branches);
-
-            const getCompanyBalance = {
-                company_name: company.name,
-                date: new Date().toISOString() 
-            };
-
-            const companyBalance = await getLatestCompanyBalance(getCompanyBalance);
-            setCompanyBalance(companyBalance);
-
-            const branchesBalance = await getBalancesByBranches(branches);
-            setBranchesBalance(branchesBalance);
-        }
         loadData();
     }, []);
 
-    useEffect(() => {
-        if (branchData && BranchesBalance) {
-            setOrganizedData(OrganizedData(branchData, BranchesBalance));
-        }
-    }, [branchData, BranchesBalance, expanded]);
+    const filteredCompanies =
+        companyData?.filter((item) =>
+            item.name.toLowerCase().includes(search.toLowerCase())
+        ) ?? [];
 
     return (
-        <div>
-            <h2>{company.name}</h2>
-
-            {expanded && branchData && companyBalance && BranchesBalance && (
-                <div>
-                    <h3>Company net worth: {companyBalance.net_worth}</h3>
-                    <h3>Company liabilities: {companyBalance.total_liabilities}</h3>
-                    <h3>Company assets: {companyBalance.total_assets}</h3>
-                    <h3>Branches:</h3>
-                    <BranchList branchAndBalance={organizedData!} />
-                    
-                </div>
-            )}
-            <button onClick={() => setExpanded(!expanded)}>
-                {expanded ? "Hide" : "Show"} Details
-            </button>
-        </div>
-    );
-}
-
-function BranchList({ branchAndBalance }: { branchAndBalance: BranchAndBalance[] }) {
-    return (
-        <div>
-            <h2>Branches</h2>
-                {branchAndBalance.map((b) => (
-                    <div key={b.branch.name}>
-                        <h3>Branch: {b.branch.name}</h3>
-                        <p>Company: {b.branch.company_name}</p>
-                        <p>Is Main Branch: {b.branch.main_branch ? "Yes" : "No"}</p>
-                        <p>Net Worth: {b.balance.net_worth}</p>
-                        <p>Total Liabilities: {b.balance.total_liabilities}</p>
-                        <p>Total Assets: {b.balance.total_assets}</p>
-                        <p>Date: {b.balance.date}</p>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+            <div className="max-w-7xl mx-auto px-6 py-10">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
+                    <div>
+                        <h1 className="text-5xl font-extrabold text-slate-800">
+                            Companies
+                        </h1>
+                        <p className="text-slate-500 mt-2">
+                            Explore and manage company information.
+                        </p>
                     </div>
-                ))}
+
+                    <div className="w-full md:w-96">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                placeholder="🔍 Search company..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-3 shadow-sm transition-all duration-200 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Stats */}
+                <div className="mb-8">
+                    <div className="inline-flex items-center rounded-xl bg-white px-4 py-2 shadow-sm border border-slate-200">
+                        <span className="text-sm text-slate-500">
+                            Companies found:
+                        </span>
+                        <span className="ml-2 font-bold text-slate-800">
+                            {filteredCompanies.length}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Companies */}
+                {filteredCompanies.length > 0 ? (
+                    <div className="grid gap-6">
+                        {filteredCompanies.map((company) => (
+                            <CompanyCard
+                                key={company.name}
+                                company={company}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-12 shadow-sm border border-slate-200">
+                        <p className="text-lg font-medium text-slate-700">
+                            No companies found
+                        </p>
+                        <p className="text-slate-500 mt-2">
+                            Try another search term.
+                        </p>
+                    </div>
+                )}
+            </div>
         </div>
     );
-}
-
-function OrganizedData(branches: Branch[], balances: GeneralBalance[]) : BranchAndBalance[] {
-    return branches.map((branch) => {
-        const balance = balances.find((b) => b.branch_name === branch.name)!;
-        return { branch, balance };
-    });
 }

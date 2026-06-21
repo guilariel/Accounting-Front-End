@@ -47,3 +47,11 @@ export async function createRoleForUserBranch(UserRoleDto: UserRole): Promise<vo
         }
     );
 }
+
+export async function GetRole(UserBranch: GetUserBranch) : Promise<UserRole>{
+    const response = await api.post(
+        "/user-branch/Get-Role",
+        UserBranch
+    );
+    return response.data;
+}

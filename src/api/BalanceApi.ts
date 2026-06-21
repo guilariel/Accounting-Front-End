@@ -5,9 +5,8 @@ export async function getLatestBranchBalance(branch: GetBranchBalance): Promise<
     const response = await api.get<GeneralBalance>(
         "/balance/branch",
         {
-            params: {
-                branch
-            }
+            params: branch
+            
         }
     );
     return response.data;
@@ -17,18 +16,19 @@ export async function getLatestCompanyBalance(company: GetCompanyBalance): Promi
     const response = await api.get<GeneralBalance>(
         "/balance/company",
         {
-            params: {
-                company
-            }
+            params: company
+            
         }
     );
     return response.data;
 }
 
-export async function getBalancesByBranches(branches: Branch[]): Promise<GeneralBalance[]> {
+export async function getBalancesByBranches(branches: Branch[]) {
     const response = await api.post<GeneralBalance[]>(
-        "/balance/AllBranches",
-        branches
-    );
-    return response.data;
+            "/balance/AllBranches",
+            branches
+        );
+
+        return response.data;
+
 }

@@ -5,6 +5,13 @@ import { UserProvider } from "./provider/UserProvider";
 import { AccountPage } from "./pages/AccountPage";
 import { GoogleCallback } from "./pages/GoggleCallBack";
 import axios from "axios";
+import { CompanyPage } from "./pages/CompanyPage";
+import DashBoard from "./pages/DashBoard";
+import { AddCompanyPage } from "./pages/AddCompanyPage";
+import { UpdateCompanyPage } from "./pages/UpdateCompanyPage";
+import { DeleteCompanyPage } from "./pages/DeleteCompanyPage";
+import { TransactionPage } from "./pages/TransactionPage";
+import { AccountsPage } from "./pages/ManageAccountPage";
 
 export const api = axios.create({
     baseURL: "https://localhost:7248/api"
@@ -12,7 +19,8 @@ export const api = axios.create({
 
 function App() {
     return (
-        <UserProvider>
+        <>
+            <DashBoard />
             <Routes>
                 <Route
                     path="/"
@@ -33,8 +41,32 @@ function App() {
                     path="/account"
                     element={<AccountPage />}
                 />
+                <Route
+                    path="/company"
+                    element={<CompanyPage />}
+                />
+                <Route
+                    path="/add-company"
+                    element={<AddCompanyPage />}
+                />
+                <Route
+                    path="/update-company"
+                    element={<UpdateCompanyPage />}
+                />
+                <Route
+                    path="/delete-company"
+                    element={<DeleteCompanyPage />}
+                />
+                <Route
+                    path="/transactions"
+                    element={<TransactionPage />}
+                />
+                <Route
+                    path="/manage-accounts"
+                    element={<AccountsPage />}
+                />
             </Routes>
-        </UserProvider>
+        </>
     );
 }
 
